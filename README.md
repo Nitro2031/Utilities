@@ -1,0 +1,2 @@
+# Utilities
+JavaScriptをjsDelivrでCDN配信して使いたい
