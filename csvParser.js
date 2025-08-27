@@ -27,7 +27,7 @@ export function parseCSV(csvText, { trim = true } = {}) {
                         current += '"';
                         i++;
                     } else {
-                        // クォート閉じ
+                        // クォート閉じ（文字自体は保持せず状態だけ変える）
                         inQuotes = false;
                     }
                 } else {
@@ -48,7 +48,7 @@ export function parseCSV(csvText, { trim = true } = {}) {
 
     // ヘッダー行の取得
     const headers = parseLine(lines[0]).map(h =>
-        trim ? h.trim().replace(/^"|"$/g, '') : h
+        trim ? h.trim() : h
     );
 
     // データ行の処理
@@ -59,12 +59,12 @@ export function parseCSV(csvText, { trim = true } = {}) {
         headers.forEach((h, i) => {
             let value = values[i] || '';
 
-            // 1. 前後のクォート除去（trimオプションがtrueなら）
+            // 前後のクォート除去（trimオプションがtrueなら）
             if (trim) {
-                value = value.trim().replace(/^"|"$/g, '');
+                value = value.trim();
             }
 
-            // 2. エスケープ解除（"" → "）
+            // エスケープ解除（"" → "）
             value = value.replace(/""/g, '"');
 
             obj[h] = value;
