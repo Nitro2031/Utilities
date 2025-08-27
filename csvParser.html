@@ -1,7 +1,106 @@
-<script type="module">
-    import { parseCSV } from "https://cdn.jsdelivr.net/gh/Nitro2031/Utilities@1.0.0/csvParser.min.js";
+<!DOCTYPE html>
+<html lang="ja">
 
-    fetch('./data/test.csv')
-        .then(res => res.text())
-        .then(csv => console.log(parseCSV(csv)));
-</script>
+    <head>
+        <meta charset="UTF-8">
+        <title>csvParser 動的確認</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 20px;
+            }
+
+            #drop-zone {
+                border: 2px dashed #999;
+                border-radius: 8px;
+                padding: 20px;
+                text-align: center;
+                color: #666;
+                margin-bottom: 16px;
+            }
+
+            #drop-zone.dragover {
+                border-color: #4CAF50;
+                background: #f8fff8;
+            }
+
+            pre {
+                background: #1e1e1e;
+                color: #dcdcdc;
+                padding: 12px;
+                border-radius: 6px;
+                white-space: pre-wrap;
+                font-family: monospace;
+            }
+
+            textarea {
+                width: 100%;
+                height: 100px;
+                margin-top: 8px;
+                font-family: monospace;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>csvParser 動作確認</h1>
+        <div id="drop-zone">ここにCSVファイルをドラッグ＆ドロップ または 下の欄に貼り付け</div>
+        <textarea id="csv-input" placeholder="ここにCSVテキストを貼り付けてもOK"></textarea>
+        <h2>解析結果 (JSON)</h2>
+        <pre id="output"></pre>
+
+        <script type="module">
+            import { parseCSV } from "https://cdn.jsdelivr.net/gh/Nitro2031/Utilities@1.0.0/csvParser.min.js";
+
+            const dropZone = document.getElementById('drop-zone');
+            const output = document.getElementById('output');
+            const csvInput = document.getElementById('csv-input');
+
+            function displayResult(data) {
+                output.textContent = JSON.stringify(data, null, 2);
+            }
+
+            // CSV文字列を処理
+            function handleCSVText(csvText) {
+                try {
+                    const parsed = parseCSV(csvText);
+                    displayResult(parsed);
+                } catch (err) {
+                    output.textContent = `Error: ${err}`;
+                }
+            }
+
+            // --- 初期表示（サンプルCSV） ---
+            fetch('./data/test.csv')
+                .then(res => res.text())
+                .then(handleCSVText)
+                .catch(err => output.textContent = `サンプル読込エラー: ${err}`);
+
+            // --- ドラッグ&ドロップ対応 ---
+            dropZone.addEventListener('dragover', e => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+            dropZone.addEventListener('drop', e => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.includes('csv')) {
+                    file.text().then(handleCSVText);
+                } else {
+                    output.textContent = 'CSVファイルをドロップしてください';
+                }
+            });
+
+            // --- テキストエリア入力 ---
+            csvInput.addEventListener('input', () => {
+                const text = csvInput.value.trim();
+                if (text) handleCSVText(text);
+            });
+        </script>
+    </body>
+
+</html>
