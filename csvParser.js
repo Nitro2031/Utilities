@@ -53,7 +53,17 @@ export function parseCSV(csvText, { trim = true } = {}) {
         const values = parseLine(line);
         const obj = {};
         headers.forEach((h, i) => {
-            obj[h] = values[i] ? (trim ? values[i].trim().replace(/^"|"$/g, '') : values[i]) : '';
+            let value = values[i] || '';
+
+            // 1. 前後のクォート除去（trimオプションがtrueなら）
+            if (trim) {
+                value = value.trim().replace(/^"|"$/g, '');
+            }
+
+            // 2. エスケープ解除（"" → "）
+            value = value.replace(/""/g, '"');
+
+            obj[h] = value;
         });
         return obj;
     });
