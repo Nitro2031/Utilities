@@ -45,6 +45,13 @@ describe('parseCSV', () => {
         expect(result[0].quote).toBe('LF-LC GT "Vision Gran Turismo"')
     })
 
+    it('エスケープされたダブルクォートを正しく処理できる5', () => {
+        const csv = '"name","quote"\n"Car 5","GRヤリス 1st Edition RZ ""High performance"" \'20'
+        const result = parseCSV(csv)
+        console.log(result[0].quote)
+        expect(result[0].quote).toBe('GRヤリス 1st Edition RZ "High performance" \'20')
+    })
+
     it('空セルを空文字として扱う', () => {
         const csv = 'name,age\nAlice,\n,Bob'
         const result = parseCSV(csv)
