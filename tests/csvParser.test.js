@@ -24,6 +24,27 @@ describe('parseCSV', () => {
         expect(result[0].quote).toBe('He said "Hello"')
     })
 
+    it('エスケープされたダブルクォートを正しく処理できる2', () => {
+        const csv = '"name","quote"\n"Car 2","1970年式フォード・マスタング""トランスキャマー"""'
+        const result = parseCSV(csv)
+        console.log(result[0].quote)
+        expect(result[0].quote).toBe('1970年式フォード・マスタング"トランスキャマー"')
+    })
+
+    it('エスケープされたダブルクォートを正しく処理できる3', () => {
+        const csv = '"name","quote"\n"Car 3","CTR ""イエローバード"""'
+        const result = parseCSV(csv)
+        console.log(result[0].quote)
+        expect(result[0].quote).toBe('CTR "イエローバード"')
+    })
+
+    it('エスケープされたダブルクォートを正しく処理できる4', () => {
+        const csv = '"name","quote"\n"Car 4","LF-LC GT ""Vision Gran Turismo"""'
+        const result = parseCSV(csv)
+        console.log(result[0].quote)
+        expect(result[0].quote).toBe('LF-LC GT "Vision Gran Turismo"')
+    })
+
     it('空セルを空文字として扱う', () => {
         const csv = 'name,age\nAlice,\n,Bob'
         const result = parseCSV(csv)
