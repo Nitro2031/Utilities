@@ -3,6 +3,11 @@ JavaScriptをjsDelivrでCDN配信して使いたい
 
 `https://cdn.jsdelivr.net/gh/Nitro2031/Utilities@1.0.0/csvParser.min.js`
 
+```js
+        <script type="module">
+            import { parseCSV } from "https://cdn.jsdelivr.net/gh/Nitro2031/Utilities@Development/csvParser.min.js?v=20250830";
+```
+
 ## GitHub Actionsでプッシュ時に自動テストする設定
 .github/workflows/test.yml
 ### ポイント解説
