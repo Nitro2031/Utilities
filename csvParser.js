@@ -16,11 +16,11 @@
  * //   { name: 'Car 2', maker: 'Maker B', powerWeight: '3.0', category: 'Category 2', drive: 'FR', horsePower: '200', weight: '1300', intake: 'TC', year: '2021', fuelEfficiency: '12' }
  * // ]
  */
-export function parseCSV(csvText, { trim = true } = {}) {
+export function parseCSV2(csvText, { trim = true } = {}) {
     if (!csvText || typeof csvText !== 'string') return [];
 
     const lines = csvText.trim().split('\n');
-    if (lines.length < 2) return [];
+    if (lines.length < 2) return { header: [], data: [] };
 
     // 1行のCSVを配列化する関数
     const parseLine = (line) => {
@@ -63,7 +63,7 @@ export function parseCSV(csvText, { trim = true } = {}) {
     );
 
     // データ行の処理
-    return lines.slice(1).map(line => {
+    const data = lines.slice(1).map(line => {
         const values = parseLine(line);
         const obj = {};
 
@@ -82,5 +82,16 @@ export function parseCSV(csvText, { trim = true } = {}) {
         });
 
         return obj;
-    });
+    })
+    return {
+        header: headers,
+        data: data
+    };
+}
+
+// export default parseCSV;
+export function parseCSV(csvText, { trim = true } = {}) {
+    const result = parseCSV2(csvText, { trim });
+    if (!result.data) return [];
+    return result.data;
 }

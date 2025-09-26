@@ -1,11 +1,15 @@
-import { parseCSV } from "https://cdn.jsdelivr.net/gh/Nitro2031/Utilities/csvParser.min.js";
-
+import { parseCSV } from "https://cdn.jsdelivr.net/gh/Nitro2031/Utilities@Development/csvParser.min.js";
+import { parseCSV2 } from "./csvParser.js";
 const dropZone = document.getElementById('drop-zone');
 const output = document.getElementById('output');
+const output2 = document.getElementById('output2');
 const csvInput = document.getElementById('csv-input');
 
 function displayResult(data) {
     output.textContent = JSON.stringify(data, null, 2);
+}
+function displayResult2(data) {
+    output2.textContent = JSON.stringify(data, null, 2);
 }
 
 // CSV文字列を処理
@@ -14,6 +18,9 @@ function handleCSVText(csvText) {
         const parsed = parseCSV(csvText);
         console.log(JSON.stringify(parsed));
         displayResult(parsed);
+        const parsed2 = parseCSV2(csvText); // header付き
+        console.log(JSON.stringify(parsed2));
+        displayResult2(parsed2);
     } catch (err) {
         output.textContent = `Error: ${err}`;
     }

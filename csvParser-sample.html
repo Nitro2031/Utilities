@@ -3,16 +3,21 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>csvParser 動的確認</title>
+        <title>csvParser2 動的確認</title>
         <link href="./csvParser-sample.css" rel="stylesheet" />
     </head>
 
     <body>
-        <h1>csvParser 動作確認</h1>
+        <h1>csvParser2 動作確認</h1>
         <div id="drop-zone">ここにCSVファイルをドラッグ＆ドロップ または 下の欄に貼り付け</div>
         <textarea id="csv-input" placeholder="ここにCSVテキストを貼り付けてもOK"></textarea>
         <h2>解析結果 (JSON)</h2>
-        <pre id="output"></pre>
+        <ul>
+            <li>上: parseCSV (ヘッダーなし)</li>
+            <pre id="output"></pre>
+            <li>下: parseCSV2 (ヘッダーあり)</li>
+            <pre id="output2"></pre>
+        </ul>
 
         <script type="module" src="./csvParser-sample.js"></script>
     </body>
