@@ -20,7 +20,7 @@ export function parseCSV2(csvText, { trim = true } = {}) {
     if (!csvText || typeof csvText !== 'string') return [];
 
     const lines = csvText.trim().split('\n');
-    if (lines.length < 2) return { header: [], data: [] };
+    if (lines.length < 2) return { header: [], items: [] };
 
     // 1行のCSVを配列化する関数
     const parseLine = (line) => {
@@ -63,7 +63,7 @@ export function parseCSV2(csvText, { trim = true } = {}) {
     );
 
     // データ行の処理
-    const data = lines.slice(1).map(line => {
+    const items = lines.slice(1).map(line => {
         const values = parseLine(line);
         const obj = {};
 
@@ -84,14 +84,14 @@ export function parseCSV2(csvText, { trim = true } = {}) {
         return obj;
     })
     return {
-        header: headers,
-        data: data
+        headers: headers,
+        items: items
     };
 }
 
 // export default parseCSV;
 export function parseCSV(csvText, { trim = true } = {}) {
     const result = parseCSV2(csvText, { trim });
-    if (!result.data) return [];
-    return result.data;
+    if (!result.items) return [];
+    return result.items;
 }
